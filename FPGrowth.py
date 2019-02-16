@@ -20,7 +20,7 @@ def makeTree(dataset, minsupport=1):
     for row in dataset:
         for element in row:
             headerTable[element] = headerTable.get(element, 0) + dataset[row]
-    keysToDelete= list()
+    keysToDelete = list()
     for key in headerTable.keys():
         if headerTable[key] < minsupport:
             keysToDelete.append(key)
@@ -77,11 +77,28 @@ def createInitSet(dataSet):
     return retDict
 
 
+def addPath(node, path):
+    if node.parent is not None:
+        path.append(node.name)
+        addPath(node.parent, path)
+
+
+def getPaths(basePath, node):
+    allPaths = dict()
+    while node is not None:
+        path = list()
+        addPath(node, path)
+        if len(path) > 1:
+            allPaths[frozenset(path[1:])] = node.noOfOccurences
+        node = node.nodeLink
+    return allPaths
+
+
 if __name__ == '__main__':
     simpDat = loadSimpDat()
     print(simpDat)
     initSet = createInitSet(simpDat)
     print(initSet)
     myFPtree, myHeaderTab = makeTree(initSet, 3)
-    myFPtree.disp()
-
+    # myFPtree.disp()
+    path = getPaths('x', myHeaderTab['x'][1])
