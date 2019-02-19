@@ -1,5 +1,6 @@
-from Preprocessing import import_data
+from Preprocessing import Import
 import argparse
+
 
 class Node:
     def __init__(self, name, noOfOccurrences, parent):
@@ -91,25 +92,24 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('attribute')
     parser.add_argument('value')
-    args= parser.parse_args()
-    value= args.value
+    args = parser.parse_args()
+    value = args.value
     if args.value.isdigit():
-        value= int(args.value)
-    data = import_data()
+        value = int(args.value)
+    data = Import.import_data()
     initSet = createInitSet(data)
     fpTree, headerTab = makeTree(initSet, 3)
     try:
-        pathValue=headerTab[(args.attribute, value)]
+        pathValue = headerTab[(args.attribute, value)]
     except KeyError:
         print('Value not found')
         exit(1)
     path = getPaths(pathValue[1])
-    print(path)
     stringToAdd = ''
     for row in path:
         listrow = list(row)
         for i in range(len(listrow)):
-            phraseToAdd= str(listrow[i][0]) + '=' + str(listrow[i][1])
+            phraseToAdd = str(listrow[i][0]) + '=' + str(listrow[i][1])
             stringToAdd += (phraseToAdd)
 
             if i < len(listrow) - 1:
