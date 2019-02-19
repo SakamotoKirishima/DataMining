@@ -1,0 +1,86 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module FPGrowth</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>FPGrowth</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///D:/study%20docs/cs/data%20mining/datamining/fpgrowth.py">d:\study docs\cs\data mining\datamining\fpgrowth.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="FPGrowth.html#Node">Node</a>
+</font></dt><dt><font face="helvetica, arial"><a href="FPGrowth.html#Tree">Tree</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Node">class <strong>Node</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Class&nbsp;to&nbsp;store&nbsp;the&nbsp;values&nbsp;required&nbsp;to&nbsp;identify&nbsp;each&nbsp;node<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Node-__init__"><strong>__init__</strong></a>(self, value<font color="#909090">=()</font>, noOfOccurrences<font color="#909090">=1</font>, parent<font color="#909090">=None</font>)</dt><dd><tt>__init__&nbsp;method<br>
+:param&nbsp;value:&nbsp;A&nbsp;tuple&nbsp;containing&nbsp;the&nbsp;attribute-value&nbsp;pair<br>
+:param&nbsp;noOfOccurrences:&nbsp;no&nbsp;of&nbsp;occurrences&nbsp;of&nbsp;the&nbsp;attribute-value&nbsp;pair<br>
+:param&nbsp;parent:&nbsp;parent&nbsp;of&nbsp;<a href="#Node">Node</a></tt></dd></dl>
+
+<dl><dt><a name="Node-linkNode"><strong>linkNode</strong></a>(self)</dt><dd><tt>Method&nbsp;to&nbsp;find&nbsp;the&nbsp;linking&nbsp;node<br>
+:return:</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Tree">class <strong>Tree</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Class&nbsp;to&nbsp;store&nbsp;the&nbsp;information&nbsp;of&nbsp;the&nbsp;FP&nbsp;tree&nbsp;and&nbsp;mine&nbsp;it<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Tree-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>__init__&nbsp;method</tt></dd></dl>
+
+<dl><dt><a name="Tree-getPaths"><strong>getPaths</strong></a>(self, node)</dt><dd><tt>Method&nbsp;to&nbsp;get&nbsp;conditional&nbsp;pattern<br>
+:param&nbsp;node:&nbsp;<a href="#Node">Node</a>&nbsp;to&nbsp;draw&nbsp;path&nbsp;from<br>
+:return:&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Tree-makeTree"><strong>makeTree</strong></a>(self, dataSet)</dt><dd><tt>Method&nbsp;to&nbsp;create&nbsp;the&nbsp;FP&nbsp;tree<br>
+:param&nbsp;dataSet:&nbsp;the&nbsp;data&nbsp;set&nbsp;to&nbsp;find&nbsp;frequent&nbsp;item&nbsp;sets&nbsp;in<br>
+:return:&nbsp;None</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Tree-addPath"><strong>addPath</strong></a>(node, path)</dt><dd><tt>Static&nbsp;method&nbsp;to&nbsp;find&nbsp;a&nbsp;path&nbsp;from&nbsp;node&nbsp;to&nbsp;root&nbsp;recursively<br>
+:param&nbsp;node:&nbsp;input&nbsp;node<br>
+:param&nbsp;path:&nbsp;path&nbsp;found<br>
+:return:</tt></dd></dl>
+
+<dl><dt><a name="Tree-updateTree"><strong>updateTree</strong></a>(tree, table, items, count)</dt><dd><tt>Static&nbsp;method&nbsp;called&nbsp;by&nbsp;make&nbsp;<a href="#Tree">Tree</a>&nbsp;to&nbsp;update&nbsp;the&nbsp;add&nbsp;nodes&nbsp;and&nbsp;modify&nbsp;the&nbsp;tree<br>
+:param&nbsp;tree:&nbsp;FP&nbsp;tree<br>
+:param&nbsp;table:&nbsp;containing&nbsp;what&nbsp;is&nbsp;in&nbsp;the&nbsp;dataset&nbsp;and&nbsp;how&nbsp;often&nbsp;it&nbsp;occurs<br>
+:param&nbsp;items:&nbsp;items&nbsp;to&nbsp;put&nbsp;into&nbsp;the&nbsp;FP&nbsp;tree<br>
+:param&nbsp;count:&nbsp;no&nbsp;of&nbsp;occurrences&nbsp;of&nbsp;an&nbsp;item<br>
+:return:&nbsp;None</tt></dd></dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
