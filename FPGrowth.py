@@ -3,38 +3,31 @@ import argparse
 
 
 class Node:
-    def __init__(self, name, noOfOccurrences, parent):
-        self.name = name
+    def __init__(self, value=tuple(), noOfOccurrences=1, parent=None):
+        self.value = value
         self.noOfOccurences = noOfOccurrences
         self.parent = parent
         self.children = dict()
         self.nodeLink = None
 
-    def addOccurences(self, noOfMoreOccurences):
-        self.noOfOccurences += noOfMoreOccurences
 
-    def disp(self, ind=1):
-        print('  ' * ind, self.name, ' ', self.noOfOccurences)
-        for child in self.children.values():
-            child.disp(ind + 1)
-
-
-def makeTree(dataset, minsupport=1):
+def makeTree(dataSet):
+    minSupport = 1
     headerTable = dict()
-    for row in dataset:
+    for row in dataSet:
         for element in row:
-            headerTable[element] = headerTable.get(element, 0) + dataset[row]
+            headerTable[element] = headerTable.get(element, 0) + dataSet[row]
     keysToDelete = list()
     for key in headerTable.keys():
-        if headerTable[key] < minsupport:
+        if headerTable[key] < minSupport:
             keysToDelete.append(key)
     for key in keysToDelete:
         del headerTable[key]
     itemSet = set(headerTable.keys())
     for key in headerTable.keys():
         headerTable[key] = [headerTable[key], None]
-    tree = Node('NULL', 1, None)
-    for row, count in dataset.items():
+    tree = Node()
+    for row, count in dataSet.items():
         localDict = dict()
         for element in row:
             if element in itemSet:
@@ -47,44 +40,49 @@ def makeTree(dataset, minsupport=1):
 
 def updateTree(items, tree, headerTable, count):
     if items[0] in tree.children:
-        tree.children[items[0]].addOccurences(count)
+        tree.children[items[0]].noOfOccurences += count
     else:
         tree.children[items[0]] = Node(items[0], count, tree)
-        if headerTable[items[0]][1] is None:
-            headerTable[items[0]][1] = tree.children[items[0]]
+        if headerTable[items[0]][1] is not None:
+            node= findNodeLink(headerTable[items[0]][1])
+            node.nodelink= tree.children[items[0]]
+
         else:
-            updateHeaderTable(headerTable[items[0]][1], tree.children[items[0]])
-    if len(items) > 1:
+            headerTable[items[0]][1] = tree.children[items[0]]
+    if len(items) <= 1:
+        pass
+    else:
         updateTree(items[1::], tree.children[items[0]], headerTable, count)
 
 
-def updateHeaderTable(node, targetNode):
+def findNodeLink(node):
     while node.nodeLink is not None:
         node = node.nodeLink
-    node.nodeLink = targetNode
-
-
-def createInitSet(dataSet):
-    retDict = {}
-    for row in dataSet:
-        retDict[frozenset(row)] = 1
-    return retDict
+    return node
 
 
 def addPath(node, path):
-    if node.parent is not None:
-        path.append(node.name)
-        addPath(node.parent, path)
+    if node.parent is None:
+        return
+    path.append(node.value)
+    addPath(node.parent, path)
 
 
 def getPaths(node):
     allPaths = dict()
-    while node is not None:
+    check = True
+    while check:
         path = list()
         addPath(node, path)
         if len(path) > 1:
-            allPaths[frozenset(path[1:])] = node.noOfOccurences
+            tempTuple=list()
+            for i in range(1,len(path)):
+                if path[i] not in tempTuple:
+                    tempTuple.append(path[i])
+            allPaths[tuple(tempTuple)] = node.noOfOccurences
         node = node.nodeLink
+        if node is None:
+            check= False
     return allPaths
 
 
@@ -97,8 +95,7 @@ if __name__ == '__main__':
     if args.value.isdigit():
         value = int(args.value)
     data = Import.import_data()
-    initSet = createInitSet(data)
-    fpTree, headerTab = makeTree(initSet, 3)
+    fpTree, headerTab = makeTree(data)
     try:
         pathValue = headerTab[(args.attribute, value)]
     except KeyError:
@@ -107,12 +104,11 @@ if __name__ == '__main__':
     path = getPaths(pathValue[1])
     stringToAdd = ''
     for row in path:
-        listrow = list(row)
-        for i in range(len(listrow)):
-            phraseToAdd = str(listrow[i][0]) + '=' + str(listrow[i][1])
+        for i in range(len(row)):
+            phraseToAdd = str(row[i][0]) + '=' + str(row[i][1])
             stringToAdd += (phraseToAdd)
 
-            if i < len(listrow) - 1:
+            if i < len(row) - 1:
                 stringToAdd += ','
             else:
                 stringToAdd += ' '
