@@ -3,8 +3,15 @@ from pprint import pprint
 
 
 class Import:
+    """
+    Class to import dataset and put it into a usable format
+    """
     @staticmethod
     def import_data():
+        """
+        Static method to import data
+        :return: Dictionary with each row of the dataset as the key and 1 as the value
+        """
         attr_names = ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety', 'class']
         datafile = open('cars.csv', 'r')
         datareader = csv.reader(datafile, delimiter=',')
