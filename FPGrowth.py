@@ -1,3 +1,6 @@
+from Preprocessing import import_data
+import argparse
+
 class Node:
     def __init__(self, name, noOfOccurrences, parent):
         self.name = name
@@ -60,20 +63,10 @@ def updateHeaderTable(node, targetNode):
     node.nodeLink = targetNode
 
 
-def loadSimpDat():
-    simpDat = [['r', 'z', 'h', 'j', 'p'],
-               ['z', 'y', 'x', 'w', 'v', 'u', 't', 's'],
-               ['z'],
-               ['r', 'x', 'n', 'o', 's'],
-               ['y', 'r', 'x', 'z', 'q', 't', 'p'],
-               ['y', 'z', 'x', 'e', 'q', 's', 't', 'm']]
-    return simpDat
-
-
 def createInitSet(dataSet):
     retDict = {}
-    for trans in dataSet:
-        retDict[frozenset(trans)] = 1
+    for row in dataSet:
+        retDict[frozenset(row)] = 1
     return retDict
 
 
@@ -83,7 +76,7 @@ def addPath(node, path):
         addPath(node.parent, path)
 
 
-def getPaths(basePath, node):
+def getPaths(node):
     allPaths = dict()
     while node is not None:
         path = list()
@@ -95,10 +88,34 @@ def getPaths(basePath, node):
 
 
 if __name__ == '__main__':
-    simpDat = loadSimpDat()
-    print(simpDat)
-    initSet = createInitSet(simpDat)
-    print(initSet)
-    myFPtree, myHeaderTab = makeTree(initSet, 3)
-    # myFPtree.disp()
-    path = getPaths('x', myHeaderTab['x'][1])
+    parser = argparse.ArgumentParser()
+    parser.add_argument('attribute')
+    parser.add_argument('value')
+    args= parser.parse_args()
+    value= args.value
+    if args.value.isdigit():
+        value= int(args.value)
+    data = import_data()
+    initSet = createInitSet(data)
+    fpTree, headerTab = makeTree(initSet, 3)
+    try:
+        pathValue=headerTab[(args.attribute, value)]
+    except KeyError:
+        print('Value not found')
+        exit(1)
+    path = getPaths(pathValue[1])
+    print(path)
+    stringToAdd = ''
+    for row in path:
+        listrow = list(row)
+        for i in range(len(listrow)):
+            phraseToAdd= str(listrow[i][0]) + '=' + str(listrow[i][1])
+            stringToAdd += (phraseToAdd)
+
+            if i < len(listrow) - 1:
+                stringToAdd += ','
+            else:
+                stringToAdd += ' '
+        stringToAdd += '(' + str(path[row]) + ')' + '\n'
+    fo = open('Freq_Items_sup.txt', 'w')
+    fo.write(stringToAdd)
