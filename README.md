@@ -6,8 +6,8 @@ Two arguments are required as input to run the program: the attribute and the va
 
 |Sl.No. |   Attribute  | Values                   |
 |-------|--------------|--------------------------| 
-|1      | buying       | v-high, high, med, low   |
-|2      | maint        | v-high, high, med, low   |
+|1      | buying       | vhigh, high, med, low   |
+|2      | maint        | vhigh, high, med, low   |
 |3      | doors        | 2, 3, 4, 5-more          |
 |4      | persons      | 2, 4, more               |
 |5      | lug_boot     | small, med, big          |
