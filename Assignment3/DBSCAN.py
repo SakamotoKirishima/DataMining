@@ -6,31 +6,61 @@ from Preprocessing import preprocess
 
 
 class Status:
+    """
+    Class to determine the status of each point
+    """
     def __init__(self):
+        """
+        __init__() method
+        """
         self.status = 'new'
 
     def setVisited(self):
+        """
+        Method to set visited status
+        """
         self.status = 'visited'
 
     def setNoise(self):
+        """
+        Method to set status as noise
+        :return:
+        """
         self.status = 'noise'
 
     def getStatus(self):
+        """
+        MEthod to get status
+        :return: status
+        """
         return self.status
 
 
 class Clustering:
+    """
+    Class that performs clustering
+    """
     status = None
     isMember = None
     distance = None
     distanceIdx = None
 
     def __init__(self, points, eps=0.15, minSup=2):
+        """
+        __init__ method
+        :param points: points input
+        :param eps: minimum distance(epsilon)
+        :param minSup: minimum number of points
+        """
         self.points = points
         self.eps = eps
         self.minSup = minSup
 
     def mainDBSCAN(self):
+        """
+        Main DBSCAN method
+        :return: all clusters
+        """
         clusters = list()
         nPts = self.points.shape[0]
         self.computeDistance()
@@ -49,6 +79,12 @@ class Clustering:
         return clusters
 
     def expandCluster(self, point, neighbors):
+        """
+        Method to expand a cluster
+        :param point: point input
+        :param neighbors: neighbours
+        :return: expanded cluster
+        """
 
         cluster = list()
         cluster = self.addToCluster(cluster, point)
@@ -66,6 +102,11 @@ class Clustering:
         return cluster
 
     def regionQuery(self, center):
+        """
+        Query to find the nearest points
+        :param center: the point input
+        :return: neighbors
+        """
         neighbors = set()
         i = 0
         while Clustering.distance[center, Clustering.distanceIdx[center, i]] <= self.eps:
@@ -74,6 +115,10 @@ class Clustering:
         return neighbors
 
     def computeDistance(self):
+        """
+        Calculate the distance between all the points
+        :return:
+        """
 
         nPts = self.points.shape[0]
 
@@ -90,12 +135,23 @@ class Clustering:
 
     @staticmethod
     def addToCluster(cluster, k):
+        """
+        Add a point to a cluster
+        :param cluster: cluster input
+        :param k: the point input
+        :return: expanded cluster
+        """
         cluster.append(k)
         Clustering.isMember[k] = True
         return cluster
 
 
 def plotUnclustered(points):
+    """
+    Function to plot unclustered graph
+    :param points: points input
+    :return:
+    """
     pointArray = points.A
     x = pointArray[:, 0]
     y = pointArray[:, 1]
@@ -119,6 +175,13 @@ def plotUnclustered(points):
 
 
 def plotClusters(points, clusters, noise):
+    """
+    Plot the clusters
+    :param points: points input
+    :param clusters: clusters
+    :param noise: noise points
+    :return:
+    """
     tracePoints = list()
     j = 0
     for cluster in clusters:
@@ -174,7 +237,7 @@ if __name__ == "__main__":
     preprocess()
     file_descriptor = open("creditcard.dat", "r")
     pointsToCluster = pickle.load(file_descriptor)
-    plotUnclustered(pointsToCluster)
+    # plotUnclustered(pointsToCluster)
     # pointsToCluster= np.asmatrix(pointsToCluster)
     #     pointsToCluster= np.matrix('''0	 -1.359807134 -0.072781173	2.536346738	1.378155224	-0.33832077	0.462387778	0.239598554	0.098697901	0.36378697;
     # 0 1.191857111 0.266150712 0.166480113 0.448154078 0.060017649 -0.082360809 -0.078802983 0.085101655 -0.255425128;
@@ -205,6 +268,7 @@ if __name__ == "__main__":
             if clusterOb.status[point].getStatus() == 'noise':
                 noise.append(point)
         print "\nThe noise points are:\n", noise
-        plotClusters(pointsToCluster, clusters, noise)
+        # plotClusters(pointsToCluster, clusters, noise)
+        print len(clusters[0])/10000
     else:
         print "No clusters were found!"

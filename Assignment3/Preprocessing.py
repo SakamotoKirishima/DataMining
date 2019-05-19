@@ -10,6 +10,7 @@ def preprocess():
     df = pd.read_csv('creditcard.csv')
     # print 2
     df1 = df.drop(u'Time', axis=1)
+    df2= df.drop('Class', axis=1)
     # print 3
     model = RandomForestRegressor(random_state=1, max_depth=10)
     # print 4
@@ -18,16 +19,17 @@ def preprocess():
     features = df.columns
     importances = model.feature_importances_
     # print 6
-    indices = np.argsort(importances)[-2:]
+    indices = np.argsort(importances)[-9:]
     # print 7
     importantFeatures = list()
     for i in indices:
         importantFeatures.append(features[i])
     for i in df.columns:
-        if i not in importantFeatures:
+        if i not in importantFeatures and i != 'Class':
             df = df.drop(i, axis=1)
 
     # x = list(reader)
+    # print(df.columns)
     df = df.truncate(before=1, after=10000)
     array = df.values
     result = np.asmatrix(array)
@@ -36,3 +38,6 @@ def preprocess():
     fo = open('creditcard.dat', 'wb')
     pickle.dump(result, fo)
     fo.close()
+
+if __name__ == '__main__':
+    preprocess()
